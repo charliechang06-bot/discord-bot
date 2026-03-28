@@ -29,11 +29,14 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    is_dm = isinstance(message.channel, discord.DMChannel)
+
     if message.author.id not in ALLOWED_USERS:
-        if 'xavier' in message.content.lower():
+        if 'xavier' in message.content.lower() or is_dm:
             await message.channel.send('Woof!')
         return
-    if 'xavier' in message.content.lower():
+
+    if is_dm or 'xavier' in message.content.lower():
         user_name = ALLOWED_USERS[message.author.id]
         response = claude.messages.create(
             model='claude-haiku-4-5-20251001',
